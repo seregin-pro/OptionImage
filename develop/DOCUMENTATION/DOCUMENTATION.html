@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="files/style.css">
+	<link rel="stylesheet" href="files/prettify/prettify.css">
+	<script src="files/jquery.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script src="files/prettify/prettify.js"></script>
+	<script src="files/prettify/run_prettify.js"></script>
+	<script src="files/prettify/lang-sql.js"></script>
+	<title>Документация модуля: Смена изображения товара при выборе опции</title>
+  </head>
+  <body>
+	<div id="main" class="container">
+	  <h1>Смена изображения товара при выборе опции</h1>
+	  <h3>Версия: 1.0.0</h3>
+	  <div class="row">
+		<div class="col-md-8">
+		  <h3>Совместимость</h3>
+	      <p>Opencart: 2.3.0.2 - 3.x</p>
+		  <p>ocStore: 2.3.0.2 - 3.x</p>
+		</div>
+		<div class="col-md-4 text-right">
+		 <h3>Контакты</h3>
+		 <p><span>Skype: seregin-pro</span></p>
+		 <p><span>E-mail: seregin-pro@ya.ru</span></p>
+		 <p><span>Сайт: <a target="_blank" href="https://seregin-pro.ru">seregin-pro.ru</a></span></p>
+		 <p><span>Следите за новостями: <a target="_blank" href="https://vk.com/club33022022">vk.com/club33022022</a></span></p>
+		</div>
+	  </div>
+	  <p style="border-bottom: 1px solid #ccc;">&nbsp;</p>
+	  <h2>Описание</h2>
+	  <p>Модуль добавляет возможность заменять изображение товара на то, что было указано в выбранной опции. Работает на радиокнопках и раскрывающемся списке.</p>
+	  <div class="row text-center">
+	    <div class="col-md-6">
+		  <p><a href="#" class="thumbnail gallery"><img src="files/img/gallery/thumb/001.png" alt=""></a><br /><span>Страница товара (Панель управления)</span></p>
+	    </div>
+		<div class="col-md-6">
+		  <p><a href="#" class="thumbnail gallery"><img src="files/img/gallery/thumb/002.png" alt=""></a><br /><span>Страница товара</span></p>
+	    </div>
+	  </div>
+	  <h2>Демонстрация</h2>
+	  <p>
+	    <a target="_blank" href="http://opencart3.seregin-pro.ru/admin/index.php?route=catalog/product/edit&product_id=50" class="btn btn-success">Страница товара (Панель управления)</a> 
+	    <a target="_blank" href="http://opencart3.seregin-pro.ru/index.php?route=product/product&product_id=50" class="btn btn-success">Страница товара</a> 
+		<a target="_blank" href="http://opencart3.seregin-pro.ru/admin/index.php?route=extension/module/options_image" class="btn btn-success">Настройки</a>
+	  </p>
+	  <h2>Доступы в Панель управления</h2>
+	  <p>
+		Логин: demo<br />
+		Пароль: demo
+	  </p>
+	  <h2>Установка</h2>
+	  <ol>
+	    <li>Сделать резервную копию сайта</li>
+		<li>Из архива установить файл options_image.ocmod.zip с помощью "Установщик дополнений OCMOD"</li>
+		<li>Активировать модуль (смотрите раздел Настройка)</li>	
+		<li>После установки перейти в раздел Модификаторы обновить кэш модификаторов</li>	
+		<li>Opencart 3: Обновить кэш сайта в администратиыной панели на главной странице</li>	
+	  </ol>
+	  <div class="alert alert-warning">При возникновении ошибок при установке используйте модуль <a class="btn btn-default" target="_blank" href="https://www.opencart.com/index.php?route=marketplace%2Fextension%2Finfo&extension_id=18892">Quick Fix</a></div>
+	  <div class="alert alert-warning">
+		<p>Если модуль не отображается в списке модулей, то распакуйте установчный архив и загрузите содержимое папки upload на сервер через FTP.</p>
+	  </div>
+	  <h2>Настройка</h2>
+	  <p>В Панели управления перейдите на страницу Модули/Расширения и активируйте модуль <b>Смена изображения товара при выборе опции</b>.</p>
+	  <div class="row text-center">
+	    <div class="col-md-12">
+		  <a href="#" class="thumbnail gallery"><img src="files/img/gallery/thumb/003.png" alt=""></a>
+	    </div>
+	  </div>
+	  <p>Перейдите в редактирование настроек и включите модуль и устаовите нужные параметры.</p>
+	  <div class="row text-center">
+	    <div class="col-md-12">
+		  <a href="#" class="thumbnail gallery"><img src="files/img/gallery/thumb/004.png" alt=""></a>
+	    </div>
+	  </div>
+	  <p><strong>Селектор основного изображения во всплывающем окне</strong> - укажите селектор по кторому находится основное изображение товара во всплывающем окне.</p>
+	  <p><strong>Атрибут основного изображения во всплывающем окне</strong> - укажите атрибут по кторому находится ссылка на основное изображение товара во всплывающем окне.</p>
+	  <p><strong>Селектор основного изображения товара</strong> - укажите селектор по кторому находится основное изображение товара во всплывающем окне.</p>
+	  <p><strong>Атрибут основного изображения товара</strong> - укажите атрибут по кторому находится ссылка на основное изображение товара во всплывающем окне.</p>
+	  <div class="alert alert-info">Информация о том, что такое селекторы <a class="btn btn-default" target="_blank" href="http://htmlbook.ru/css/selector">Читать справочник</a></div>
+	  <p style="border-bottom: 1px solid #ccc;">&nbsp;</p>
+	  <p class="text-center">Документация модуля: Опции в категориях</p>
+    </div>
+	<div class="modal fade" id="image-modal" tabindex="-1" role="dialog">
+	  <div class="modal-dialog modal-lg">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+		  </div>
+		  <div class="modal-body">
+			<img class="img-responsive center-block" src="" alt="">
+		  </div>
+		</div>
+	  </div>
+	</div>
+	<script><!--
+	$(function() {     
+		$('a.gallery').click(function(e) {
+			e.preventDefault();
+		
+			var path = $(this).find('img').attr('src').replace(/\\/g, '/');
+			var image = path.substring(path.lastIndexOf('/')+ 1);
+		
+			$('#image-modal .modal-body img').attr('src', 'files/img/gallery/' + image);
+			$("#image-modal").modal('show');
+	    });
+	  
+	    $('#image-modal .modal-body img').on('click', function() {
+	        $("#image-modal").modal('hide');
+	    });
+	});
+	//--></script>
+  </body>
+</html>

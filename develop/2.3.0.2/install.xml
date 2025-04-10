@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+	<name>Options Image</name>
+	<code>options_image.ocmod</code>
+	<author>http://seregin-pro.ru/</author>
+	<version>1.0.0</version>
+	<link>http://seregin-pro.ru/</link>
+	
+	<!-- 2.3.0.2 -->
+	
+	<!-- systen -->
+	
+	<file path="system/library/cart/cart.php">
+		<operation>
+			<search index="0"><![CDATA[SELECT pov.option_value_id]]></search>
+			<add position="replace"><![CDATA[SELECT pov.option_value_id, pov.product_image]]></add>
+		</operation>
+		<operation>
+			<search index="0"><![CDATA[if ($option_value_query->num_rows]]></search>
+			<add position="before"><![CDATA[
+				if ($option_value_query->row['product_image']) {
+					$product_query->row['image'] = $option_value_query->row['product_image'];
+				}
+			]]></add>
+		</operation>
+	</file>
+	
+	<!-- controller -->
+	
+	<file path="catalog/controller/product/product.php">
+		<operation>
+			<search index="0"><![CDATA[
+				public function index
+			]]></search>
+			<add position="after"><![CDATA[
+				$this->load->model('extension/module/options_image');
+				
+				$this->document->addScript('catalog/view/javascript/options_image/options_image.js');
+				$data['options_image_setting'] = $this->model_extension_module_options_image->getOptionsImageSetting();
+			]]></add>
+		</operation>
+		<operation>
+			<search><![CDATA[$product_option_value_data[] = array(]]></search>
+			<add position="after"><![CDATA[
+				'product_image_popup' => $option_value['product_image'] ? $this->model_tool_image->resize($option_value['product_image'], $this->config->get($this->config->get('config_theme') . '_image_popup_width'), $this->config->get($this->config->get('config_theme') . '_image_popup_height')) : '',
+				'product_image_thumb' => $option_value['product_image'] ? $this->model_tool_image->resize($option_value['product_image'], $this->config->get($this->config->get('config_theme') . '_image_thumb_width'), $this->config->get($this->config->get('config_theme') . '_image_thumb_height')) : '',
+			]]></add>
+		</operation>
+	</file>
+	<file path="admin/controller/catalog/product.php">
+		<operation>
+			<search><![CDATA[$data['product_options'] = array();]]></search>
+			<add position="before"><![CDATA[
+				$this->load->model('tool/image');
+			]]></add>
+		</operation>
+		<operation>
+			<search index="0"><![CDATA[$product_option_value_data[] = array(]]></search>
+			<add position="before"><![CDATA[
+				if (is_file(DIR_IMAGE . $product_option_value['product_image'])) {
+					$product_image = $product_option_value['product_image'];
+					$product_image_thumb = $product_option_value['product_image'];
+				} else {
+					$product_image = '';
+					$product_image_thumb = 'no_image.png';
+				}
+			]]></add>
+		</operation>
+		<operation>
+			<search index="0"><![CDATA[$product_option_value_data[] = array(]]></search>
+			<add position="after"><![CDATA[
+				'product_image'       => $product_image,
+				'product_image_thumb' => $this->model_tool_image->resize($product_image_thumb, 100, 100),
+			]]></add>
+		</operation>
+	</file>
+	
+	<!-- view -->
+	
+	<file path="catalog/view/theme/*/template/product/product.tpl">
+		<operation>
+			<search><![CDATA[type="radio" name="option[<?php echo $option['product_option_id']; ?>]"]]></search>
+			<add position="replace"><![CDATA[<?php if ($option_value['product_image_thumb']) { ?> data-product-image-thumb="<?php echo $option_value['product_image_thumb']; ?>"<?php } ?><?php if ($option_value['product_image_popup']) { ?> data-product-image-popup="<?php echo $option_value['product_image_popup']; ?>"<?php } ?>type="radio" name="option[<?php echo $option['product_option_id']; ?>]"]]></add>
+		</operation>
+		<operation>
+			<search><![CDATA[<option value="<?php echo $option_value['product_option_value_id']; ?>"]]></search>
+			<add position="replace"><![CDATA[<option<?php if ($option_value['product_image_thumb']) { ?> data-product-image-thumb="<?php echo $option_value['product_image_thumb']; ?>"<?php } ?><?php if ($option_value['product_image_popup']) { ?> data-product-image-popup="<?php echo $option_value['product_image_popup']; ?>"<?php } ?> value="<?php echo $option_value['product_option_value_id']; ?>"]]></add>
+		</operation>
+		<operation>
+			<search index="0"><![CDATA[name="quantity"]]></search>
+			<add position="before"><![CDATA[
+				<?php if ($options) { ?>
+				<script type="text/javascript"><!--
+				$(document).ready(function() {
+					options_image_setting = {};
+					
+					options_image_setting.popup_element = "<?php echo $options_image_setting['product_popup_element']; ?>";
+					options_image_setting.popup_attr    = "<?php echo $options_image_setting['product_popup_attr']; ?>";
+					options_image_setting.thumb_element = "<?php echo $options_image_setting['product_thumb_element']; ?>";
+					options_image_setting.thumb_attr    = "<?php echo $options_image_setting['product_thumb_attr']; ?>";
+					
+					$('#product input[type=\'radio\'], #product input[type=\'checkbox\'], #product select').on('change', function() {
+						changeOptionImage('#product', options_image_setting);
+					});
+				});
+				//--></script>
+				<?php } ?>
+			]]></add>
+		</operation>
+	</file>
+	<file path="admin/view/template/catalog/product_form.tpl">
+		<operation>
+			<search index="0,2"><![CDATA[<td class="text-right"><?php echo $entry_quantity; ?></td>]]></search>
+			<add position="replace"><![CDATA[<td class="text-center"><?php echo $entry_image; ?></td><td class="text-right"><?php echo $entry_quantity; ?></td>]]></add>
+		</operation>
+		<operation>
+			<search><![CDATA[<td class="text-right"><input type="text" name="product_option[<?php echo $option_row; ?>][product_option_value][<?php echo $option_value_row; ?>][quantity]"]]></search>
+			<add position="before"><![CDATA[
+				<td class="text-center">
+				  <a href="" id="product-option-thumb-image<?php echo $option_row; ?><?php echo $option_value_row; ?>" data-toggle="image" class="img-thumbnail"><img src="<?php echo $product_option_value['product_image_thumb']; ?>" alt="" title="" data-placeholder="<?php echo $placeholder; ?>" /></a>
+				  <input type="hidden" name="product_option[<?php echo $option_row; ?>][product_option_value][<?php echo $option_value_row; ?>][product_image]" value="<?php echo $product_option_value['product_image']; ?>" id="input-product-option-image<?php echo $option_row; ?><?php echo $option_value_row; ?>" />
+				</td>
+			]]></add>
+		</operation>
+		<operation>
+			<search><![CDATA[html += '  <td class="text-right"><input type="text" name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][quantity]"]]></search>
+			<add position="before"><![CDATA[
+			    html += '<td class="text-center"><a href="" id="product-option-thumb-image' + option_row + option_value_row + '" data-toggle="image" class="img-thumbnail"><img src="<?php echo $placeholder; ?>" alt="" title="" data-placeholder="<?php echo $placeholder; ?>" /></a><input type="hidden" name="product_option[' + option_row + '][product_option_value][' + option_value_row + '][product_image]" value="" id="input-product-option-image'+ option_row + option_value_row + '" /></td>';
+			]]></add>
+		</operation>
+		<operation error="skip">
+			<search index="0,2"><![CDATA[<td colspan="6"></td>]]></search>
+			<add position="replace"><![CDATA[<td colspan="7"></td>]]></add>
+		</operation>
+	</file>
+	
+	<!-- model -->
+	
+	<file path="catalog/model/catalog/product.php">
+		<operation>
+			<search><![CDATA[
+				$product_option_value['quantity'],
+			]]></search>
+			<add position="after"><![CDATA[
+				'product_image' => $product_option_value['product_image'],
+			]]></add>
+		</operation>
+	</file>
+	<file path="admin/model/catalog/product.php">
+		<operation>
+			<search><![CDATA[
+				$product_option_value['quantity'],
+			]]></search>
+			<add position="after"><![CDATA[
+				'product_image' => $product_option_value['product_image'],
+			]]></add>
+		</operation>
+		<operation>
+			<search><![CDATA[pov.quantity,]]></search>
+			<add position="replace"><![CDATA[pov.product_image, pov.quantity,]]></add>
+		</operation>
+		<operation>
+			<search><![CDATA[quantity = '" . (int)$product_option_value['quantity'] . "']]></search>
+			<add position="replace"><![CDATA[product_image = '" . $this->db->escape($product_option_value['product_image']) . "', quantity = '" . (int)$product_option_value['quantity'] . "']]></add>
+		</operation>
+	</file>
+	
+</modification>
